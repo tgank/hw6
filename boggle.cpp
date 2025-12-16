@@ -96,4 +96,33 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 {
 //add your solution here!
 
+  //Base case: check if pos out of bounds
+  if (r >= board.size() || c >= board.size()){
+    return false;
+  }
+
+  //add letter to word being built
+  word += board[r][c];
+
+  //word prefix ?
+  bool is_pref = (prefix.find(word) != prefix.end());
+  //word complete and valid ?
+  bool is_wrd = (dict.find(word) != dict.end());
+
+  //backtracking
+  if(!is_pref && !is_wrd) return 0;
+
+  //Recurse next pos
+  bool longerFound = boggleHelper(dict, prefix, board, word, result, r + dr, c+dc, dr, dc);
+
+  //longer word --> don't insert short
+  if(longerFound) return 1;
+  
+  //insert word if valid
+  if(is_wrd){
+    result.insert(word);
+    return 1;
+  }
+
+  return 0;
 }
